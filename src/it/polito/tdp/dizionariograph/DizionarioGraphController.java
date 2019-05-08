@@ -1,6 +1,7 @@
 package it.polito.tdp.dizionariograph;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.dizionariograph.model.Model;
@@ -44,6 +45,33 @@ public class DizionarioGraphController {
     @FXML
     void doGeneraGrafo(ActionEvent event) {
 
+    	txtRisultato.clear();
+    	txtParola.clear();
+
+		try {
+			int numeroLettere = Integer.parseInt(txtLettere.getText());
+			System.out.println("numero di Lettere: " + numeroLettere);
+
+			List<String> parole = model.createGraph(numeroLettere);
+
+			if (parole != null) {
+				txtRisultato.setText("Trovate " + parole.size() + " parole di lunghezza " + numeroLettere);
+			} else {
+				txtRisultato.setText("Trovate 0 parole di lunghezza: " + numeroLettere);
+			}
+
+			txtLettere.setDisable(true);
+			btnGeneraGrafo.setDisable(true);
+			txtParola.setDisable(false);
+			btnTrovaVicini.setDisable(false);
+			btnGradoMax.setDisable(false);
+
+		} catch (NumberFormatException nfe) {
+			txtRisultato.setText("Inserire un numero corretto di lettere!");
+		} catch (RuntimeException re) {
+			txtRisultato.setText(re.getMessage());
+		}
+    
     }
 
     
