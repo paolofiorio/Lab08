@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jgrapht.Graph;
+import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 
@@ -50,14 +51,40 @@ public class Model {
 			}
 
 	public List<String> displayNeighbours(String parolaInserita) {
+		if (numeroLettere != parolaInserita.length())
+			throw new RuntimeException("La parola inserita ha una lunghezza differente rispetto al numero inserito.");
 
-		System.err.println("displayNeighbours -- TODO");
-		return new ArrayList<String>();
+		List<String> parole = new ArrayList<String>();
+
+		// Ottengo la lista dei vicini di un vertice
+		parole.addAll(Graphs.neighborListOf(graph, parolaInserita));
+
+		// Ritorno la lista dei vicini
+		return parole;
+		
 	}
 
-	public int findMaxDegree() {
-		System.err.println("findMaxDegree -- TODO");
-		return -1;
+	public String findMaxDegree() {
+		int max = 0;
+		String temp = null;
+
+		for (String vertex : graph.vertexSet()) {
+			if (graph.degreeOf(vertex) > max) {
+				max = graph.degreeOf(vertex);
+				temp = vertex;
+			}
+		}
+
+		if (max != 0) {
+			StringBuilder sb = new StringBuilder();
+			sb.append(String.format("Grado max: %d dal vertice: %s\n", max, temp));
+
+			for (String v : Graphs.neighborListOf(graph, temp))
+				sb.append(v + "\n");
+
+			return sb.toString();
+		}
+		return "Non trovato.";
 	}
 	
 	

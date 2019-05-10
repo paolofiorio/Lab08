@@ -78,11 +78,32 @@ public class DizionarioGraphController {
 
     @FXML
     void doTrovaGradoMax(ActionEvent event) {
+    	try {
+			txtRisultato.setText(model.findMaxDegree());
 
+		} catch (RuntimeException re) {
+			txtRisultato.setText(re.getMessage());
+}
     }
 
     @FXML
     void doTrovaVicini(ActionEvent event) {
+    	try {
+			String parolaInserita = txtParola.getText();
+			if (parolaInserita == null || parolaInserita.length() == 0) {
+				txtRisultato.setText("Parola non iserita, inserirne una cercare");
+				return ;
+			}
+
+			List<String> parole = model.displayNeighbours(parolaInserita);
+			if (parole != null) {
+				txtRisultato.setText(parole.toString());
+			} else {
+				txtRisultato.setText("Non è stato trovato nessun risultato");
+			}
+		} catch (RuntimeException re) {
+			txtRisultato.setText(re.getMessage());
+}
 
     }
     
